@@ -124,6 +124,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e381a082d1cea7dc5b7c612be3319d09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 1
   drilling: 2
 --- !u!114 &-6126028447097932986
 MonoBehaviour:
@@ -139,6 +140,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectile: {fileID: 6945382591455997197}
   level: 1
+  active: 0
   mira: 0
 --- !u!96 &1129117299664636715
 TrailRenderer:
@@ -148,7 +150,7 @@ TrailRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6945382591455997197}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -198,7 +200,7 @@ TrailRenderer:
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
-        time: 0.1722148
+        time: 0.13888198
         value: 0.15713981
         inSlope: 0
         outSlope: 0
@@ -207,7 +209,7 @@ TrailRenderer:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 0.9944445
+        time: 0.29444754
         value: 0
         inSlope: 0
         outSlope: 0

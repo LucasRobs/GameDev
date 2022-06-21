@@ -23,7 +23,7 @@ public class RotationSpawner : MonoBehaviour
 
     IEnumerator handleSpawn()
     {  
-        yield return new WaitForSeconds(0.0001f);
+        yield return new WaitForSeconds(counter.getVelocity());
         gameObject.transform.position = pt.position;
         sp.spawn();
         rb.rotation = Random.Range(0f, 360f);

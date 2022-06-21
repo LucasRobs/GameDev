@@ -4,34 +4,50 @@ using UnityEngine;
 
 public class Entity : MonoBehaviour
 {
-  private GameObject player;
-  private GameObject camera;
+  GameObject player;
+  GameObject camera;
 
   public int vida;
-  private Counter counter;
-  private bool invulnerable;
+  Counter counter;
+  bool invulnerable;
 
   public float speed = 1f;
-  private Transform positionPlayer;
+  Transform positionPlayer;
 
   public int level = 1;
 
-  private bool isBoss = false;
-  private SpawPoint spawPoint;
+  public  bool isBoss = false;
+  SpawPoint spawPoint;
+  SpriteRenderer spriteRender;
+  
   private void Start()
   {
     player = GameObject.FindGameObjectWithTag("Player");
     camera = GameObject.Find("Camera");
     counter = camera.GetComponent<Counter>();
+    spriteRender = GetComponent<SpriteRenderer>();
     positionPlayer = player.transform;
   }
 
-  private void Update()
+  private void FixedUpdate()
   {
     if (positionPlayer.gameObject != null)
     {
       transform.position = Vector2.MoveTowards(transform.position, positionPlayer.position, speed * Time.deltaTime);
+      handleFlip();
+      handleLayer();
     }
+  }
+
+  private void handleFlip()
+  {
+    if (positionPlayer.position.x > transform.position.x) spriteRender.flipX = true;
+    else spriteRender.flipX = false;
+  }
+
+  private void handleLayer()
+  {
+    spriteRender.sortingOrder = (int)(transform.position.y * -10);
   }
 
   public void setLevel(int level)
@@ -45,15 +61,11 @@ public class Entity : MonoBehaviour
   }
 
   public void setIsBossToTrue(){
-    print("asdasdasd");
-
     this.isBoss = true;
-    print(isBoss+ "aaaaaaaaasdasdasd");
-
   }
 
-  public void setSpawPoint(SpawPoint spawPoint){
-    this.spawPoint = spawPoint;
+  public void setSpawPoint(SpawPoint sp){
+    this.spawPoint = sp;
   }
 
   public void doDamage(int damage)
@@ -64,7 +76,7 @@ public class Entity : MonoBehaviour
     if (vida <= 0)
     {
       if(isBoss){
-        spawPoint.setBossWaveToZero();
+        GameObject.Find("spawnPoint").GetComponent<SpawPoint>().setBossWaveToZero();
       }
       Destroy(transform.gameObject);
       counter.addKill(level*2);

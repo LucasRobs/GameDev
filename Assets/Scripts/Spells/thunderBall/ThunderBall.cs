@@ -6,13 +6,11 @@ public class ThunderBall : MonoBehaviour
 {
   public int damage = 1;
   public int drilling = 9999;
-  Vector3 proximo = new Vector3();
-
+  Vector2 direccion = new Vector2(1,0);
+  //Vector3 proximo = new Vector3(2f,0,0);
   void Start(){
     //Vector3 proximo = getProximity();
   }
-  
-  void Update(){}
 
   public void init(int damage, int drilling)
   {
@@ -21,9 +19,26 @@ public class ThunderBall : MonoBehaviour
   }
 
   private void FixedUpdate(){
-    transform.Translate(new Vector2(proximo.x, proximo.y) * 3.5f * Time.deltaTime);
+    transform.Translate(new Vector2(direccion.x, direccion.y) * 3.5f * Time.deltaTime);
   }
 
+  void OnTriggerEnter2D(Collider2D other)
+  {
+    if (other.gameObject.tag == "Entity"){
+      other.gameObject.GetComponent<Entity>().doDamage(damage);
+      handleDrilling();
+    }
+  }
+  void handleDrilling(){
+    drilling--;
+    if (drilling <= 0){
+      Destroy(transform.gameObject);
+    }
+  }
+}
+
+
+/*
   Vector3 getProximity(){
     GameObject[] entitys = GameObject.FindGameObjectsWithTag("Entity");
     float menor = Vector3.Distance(entitys[0].transform.position, this.transform.position);
@@ -37,19 +52,4 @@ public class ThunderBall : MonoBehaviour
     }
     return positionMaisProximo;
   }
-
-  void OnTriggerEnter2D(Collider2D other)
-  {
-    if (other.gameObject.tag == "Entity"){
-      other.gameObject.GetComponent<Entity>().doDamage(damage);
-    }
-  }
-  void handleDrilling(){
-     if (drilling <= 999){
-        drilling--;
-        if (drilling <= 0){
-          Destroy(transform.gameObject);
-        }
-      }
-  }
-}
+*/

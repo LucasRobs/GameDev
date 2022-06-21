@@ -49,9 +49,9 @@ TagManager:
   - name: entity
     uniqueID: 105751439
     locked: 0
+  - name: spell
+    uniqueID: 248182251
+    locked: 0
   - name: ui
     uniqueID: 3946542403
-    locked: 0
-  - name: New Layer
-    uniqueID: 248182251
     locked: 0

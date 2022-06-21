@@ -7,20 +7,16 @@ public class SpellThunderBall : MonoBehaviour
 
   public GameObject projectile;
   public int level = 1;
-
   public float mira = 0;
 
   float waitTime = 1f;
-  float lifeBulletTime = 2f;
+  float lifeBulletTime = 1f;
+
   void Start()
   {
-    StartCoroutine(handleShoot(waitTime / level, lifeBulletTime * (level / 2)));
+    StartCoroutine(handleShoot(waitTime , lifeBulletTime));
   }
 
-  void Update()
-  {
-
-  }
   private void upLevel()
   {
     this.level++;
@@ -31,7 +27,7 @@ public class SpellThunderBall : MonoBehaviour
     const int baseDamage = 1;
     const int baseDrilling = 2;
     mira = (mira + 8) % 360;
-    GameObject projectile = Instantiate(this.projectile, transform.position, Quaternion.Euler(0, 0, 0));
+    GameObject projectile = Instantiate(this.projectile, transform.position, Quaternion.Euler(0, 0, mira));
     ThunderBall projectileManager = projectile.GetComponent<ThunderBall>();
     projectileManager.init(level + baseDamage, level * baseDrilling);
     return projectile;

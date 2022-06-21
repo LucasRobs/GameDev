@@ -4,9 +4,14 @@ using UnityEngine;
 
 public class SpawPoint : MonoBehaviour{
     public GameObject enimy;
+    public GameObject boss;
+    public List<GameObject> enemys = new List<GameObject>();
+    public Sprite spriteDefalt;
+    
+    GameObject camera;
+    Counter counter;
     int spawnCounter = 0;
     int spawnMultiplier = 1;
-    public Sprite spriteDefalt;
     int bossWave = 0;
     
     public Sprite[] spritesWave1;
@@ -27,15 +32,21 @@ public class SpawPoint : MonoBehaviour{
     public Sprite[] spritesWave10;
     public Sprite[] spritesWave10_1;
 
+    private void Start()
+    {
+        camera = GameObject.Find("Camera");
+        counter = camera.GetComponent<Counter>();
+    }
+
     public void spawn(){
         if(bossWave == 0){
             spawnCounter += 1;
         }
-        Instantiate(getNewEnimy(), transform.position, Quaternion.Euler(0, 0, 0));
+        GameObject newEnemy = Instantiate(getNewEnimy(), transform.position, Quaternion.Euler(0, 0, 0));
+        enemys.Add(newEnemy);
     }
 
     public void setBossWaveToZero(){
-        print("DEU BOMMMM");
         bossWave = 0;
     }
 
@@ -44,30 +55,35 @@ public class SpawPoint : MonoBehaviour{
         int level = 1;
         float speed = 1f;
         bool isBoss = false;
-        if(spawnCounter <= 80 * spawnMultiplier || bossWave == 1){ //wave 1
-            if(bossWave != 1){
+        if(spawnCounter <= 50 * spawnMultiplier || bossWave == 1){ //wave 1
             sprite = spritesWave1[Random.Range(0, spritesWave1.Length)];
             level = 1;
-            }
-        }else if(spawnCounter <= 81 * spawnMultiplier){//wave 1
-            print("wave 1_1");
+            if(bossWave != 1) counter.setVelocity(2f);
+        }else if(spawnCounter <= 51 * spawnMultiplier){//wave 1_1 BOSS
             sprite = spritesWave1_1[Random.Range(0, spritesWave1_1.Length)];
-            level = 50;
+            level = 10;
             speed = 0.5f;
             isBoss = true;
             bossWave = 1;
+            counter.setVelocity(1f);
         }else if(spawnCounter <= 115 * spawnMultiplier){//wave 2
             sprite = spritesWave2[Random.Range(0, spritesWave2.Length)];
             level = 2;
-        }else if(spawnCounter <= 140 * spawnMultiplier){//wave 2
+            counter.setVelocity(0.3f);
+        }else if(spawnCounter <= 180 * spawnMultiplier || bossWave == 2 ){//wave 2_1
             sprite = spritesWave2_1[Random.Range(0, spritesWave2_1.Length)];
             level = 2;
-        }else if(spawnCounter <= 180 * spawnMultiplier){//wave 2
+            if(bossWave != 1) counter.setVelocity(0.5f);
+        }else if(spawnCounter <= 181 * spawnMultiplier){//wave 2_2 BOSS
             sprite = spritesWave2_2[Random.Range(0, spritesWave2_2.Length)];
-            level = 2;
+            level = 15;
+            speed = 0.8f;
+            isBoss = true;
+            bossWave = 2;
+            counter.setVelocity(1f);
         }else if(spawnCounter <= 300 * spawnMultiplier){//wave 3
             sprite = spritesWave3[Random.Range(0, spritesWave3.Length)];
-            level = 3;
+            level = 1;
         }else if(spawnCounter <= 450 * spawnMultiplier){//wave 4
             sprite = spritesWave4[Random.Range(0, spritesWave4.Length)];
             level = 4;
@@ -99,7 +115,11 @@ public class SpawPoint : MonoBehaviour{
             sprite = spritesWave10_1[Random.Range(0, spritesWave10_1.Length)];
             level = 10;
         }
-        GameObject newEnimy = enimy;
+        GameObject newEnimy;
+        
+        if(isBoss) newEnimy = boss;
+        else newEnimy = enimy;
+
         newEnimy.GetComponent<SpriteRenderer>().sprite = sprite;
         newEnimy.GetComponent<Entity>().setLevel(level);
         newEnimy.GetComponent<Entity>().setSpeed(speed);
