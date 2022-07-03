@@ -6,7 +6,7 @@ public class RotationSpawner : MonoBehaviour
 {
     Rigidbody2D rb;
     SpawPoint sp;
-    Counter counter;
+    Controller controller;
     public Transform pt;
     public GameObject spaenPoint;
     public GameObject player;
@@ -15,7 +15,7 @@ public class RotationSpawner : MonoBehaviour
     void Start()
     {
         pt = player.GetComponent<Transform>();
-        counter = camera.GetComponent<Counter>();
+        controller = camera.GetComponent<Controller>();
         rb = GetComponent<Rigidbody2D>();
         sp = spaenPoint.GetComponent<SpawPoint>();
         StartCoroutine(handleSpawn());
@@ -23,7 +23,7 @@ public class RotationSpawner : MonoBehaviour
 
     IEnumerator handleSpawn()
     {  
-        yield return new WaitForSeconds(counter.getVelocity());
+        yield return new WaitForSeconds(controller.getVelocity());
         gameObject.transform.position = pt.position;
         sp.spawn();
         rb.rotation = Random.Range(0f, 360f);

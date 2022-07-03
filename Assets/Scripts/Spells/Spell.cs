@@ -5,17 +5,18 @@ using UnityEngine;
 public class Spell : MonoBehaviour
 {
   public string nome;
+  public string descricao;
+  public Sprite sprite;
 
-
-  // Start is called before the first frame update
-  void Start()
-  {
-
+  public string getNome(){
+    return nome;
   }
 
-  // Update is called once per frame
-  void Update()
-  {
+  public string getDescricao(){
+    return descricao;
+  }
 
+  public Sprite getSprite(){
+    return sprite;
   }
 }

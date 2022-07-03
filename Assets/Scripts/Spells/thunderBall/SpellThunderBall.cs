@@ -2,15 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpellThunderBall : MonoBehaviour
+public class SpellThunderBall : MonoBehaviour, ISpellControler
 {
 
   public GameObject projectile;
-  public int level = 1;
+  public int level = 0;
   public float mira = 0;
 
   float waitTime = 1f;
-  float lifeBulletTime = 1f;
+  float lifeBulletTime = 3f;
 
   void Start()
   {
@@ -41,5 +41,11 @@ public class SpellThunderBall : MonoBehaviour
     StartCoroutine(handleShoot(waitTime, lifeBulletTime));
     yield return new WaitForSeconds(lifeBulletTime - waitTime);
     if (project) Destroy(project);
+  }
+
+  public void addSkill(){
+    level += 1;
+    this.gameObject.SetActive(true);
+    return;
   }
 }

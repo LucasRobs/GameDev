@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpellBite : MonoBehaviour
+public class SpellBite : MonoBehaviour, ISpellControler
 {
     public GameObject bite;
     GameObject player;
@@ -36,5 +36,11 @@ public class SpellBite : MonoBehaviour
         if (project) Destroy(project);
         yield return new WaitForSeconds(waitTime);
         StartCoroutine(handleShoot(waitTime, lifeBulletTime));
+    }
+
+    public void addSkill(){
+        level += 1;
+        this.gameObject.SetActive(true);
+        return;
     }
 }

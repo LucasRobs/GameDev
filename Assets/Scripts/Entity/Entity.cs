@@ -8,7 +8,7 @@ public class Entity : MonoBehaviour
   GameObject camera;
 
   public int vida;
-  Counter counter;
+  Controller controller;
   bool invulnerable;
 
   public float speed = 1f;
@@ -24,7 +24,7 @@ public class Entity : MonoBehaviour
   {
     player = GameObject.FindGameObjectWithTag("Player");
     camera = GameObject.Find("Camera");
-    counter = camera.GetComponent<Counter>();
+    controller = camera.GetComponent<Controller>();
     spriteRender = GetComponent<SpriteRenderer>();
     positionPlayer = player.transform;
   }
@@ -79,7 +79,7 @@ public class Entity : MonoBehaviour
         GameObject.Find("spawnPoint").GetComponent<SpawPoint>().setBossWaveToZero();
       }
       Destroy(transform.gameObject);
-      counter.addKill(level*2);
+      controller.addKill(level*2);
     }
   }
   IEnumerator handleIvunerable()
