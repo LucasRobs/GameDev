@@ -10,7 +10,8 @@ public class Controller : MonoBehaviour
     public Transform levelUpMenu;
     public GameObject[] Skills;
     public CardSkill[] CardsSkill = new CardSkill[3];
-
+    public GameObject[] bloods;
+    
     TextMeshProUGUI TMPKill;
     int level = 1;
     int exp = 0;

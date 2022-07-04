@@ -12,6 +12,7 @@ public class SpellOrbe : MonoBehaviour, ISpellControler
     float waitTime = 7f;
     float lifeBulletTime = 3f;
     int baseDamage = 1;
+    int damage = 0;
     int baseDrilling = 2;
     int level = 0;
     float rotation = 0f;
@@ -38,7 +39,7 @@ public class SpellOrbe : MonoBehaviour, ISpellControler
         GameObject projectile = Instantiate(this.orbe, point.transform.position, Quaternion.Euler(0, 0, 0));
         projectile.transform.SetParent(point.transform);
         Orbe projectileManager = projectile.GetComponent<Orbe>();
-        projectileManager.init(level + baseDamage);
+        projectileManager.init(damage + baseDamage);
         StartCoroutine(handleShoot(projectile , lifeBulletTime));
     }
 
@@ -56,6 +57,8 @@ public class SpellOrbe : MonoBehaviour, ISpellControler
         level += 1;
         if(NOrbs < maxOrbs){
             NOrbs += 1;
+        }else{
+            damage += (level/2) + 1;
         }
         this.gameObject.SetActive(true);
         return;

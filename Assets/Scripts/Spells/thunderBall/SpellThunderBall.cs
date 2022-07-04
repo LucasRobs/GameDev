@@ -11,7 +11,8 @@ public class SpellThunderBall : MonoBehaviour, ISpellControler
 
   float waitTime = 1f;
   float lifeBulletTime = 3f;
-  float nBullets = 0;
+  float nBullets = 1;
+  int damage = 1;
 
   void Start()
   {
@@ -30,7 +31,7 @@ public class SpellThunderBall : MonoBehaviour, ISpellControler
     mira = (mira + 8) % 360;
     GameObject projectile = Instantiate(this.projectile, transform.position, Quaternion.Euler(0, 0, mira));
     ThunderBall projectileManager = projectile.GetComponent<ThunderBall>();
-    projectileManager.init(level + baseDamage, level * baseDrilling);
+    projectileManager.init(damage + baseDamage, (level/2) * baseDrilling);
     return projectile;
   }
 
@@ -47,7 +48,11 @@ public class SpellThunderBall : MonoBehaviour, ISpellControler
 
   public void addSkill(){
     level += 1;
-    nBullets += 1;
+    if(level % 2 != 0){
+      nBullets += 1;
+    }else{
+      damage += (level/2) + 1;
+    }
 
     this.gameObject.SetActive(true);
     return;

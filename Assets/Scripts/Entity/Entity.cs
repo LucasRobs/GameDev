@@ -19,6 +19,8 @@ public class Entity : MonoBehaviour
   public  bool isBoss = false;
   SpawPoint spawPoint;
   SpriteRenderer spriteRender;
+
+  int baseDamage = 1;
   
   private void Start()
   {
@@ -73,13 +75,14 @@ public class Entity : MonoBehaviour
     if(invulnerable)return;
     StartCoroutine(handleIvunerable());
     vida -= damage;
+    StartCoroutine(chanceColor());
     if (vida <= 0)
     {
       if(isBoss){
         GameObject.Find("spawnPoint").GetComponent<SpawPoint>().setBossWaveToZero();
       }
-      Destroy(transform.gameObject);
       controller.addKill(level*2);
+      Destroy(transform.gameObject);
     }
   }
   IEnumerator handleIvunerable()
@@ -87,5 +90,21 @@ public class Entity : MonoBehaviour
         invulnerable = true;
         yield return new WaitForSeconds(0.5f);
         invulnerable = false;
+    }
+
+    void OnTriggerStay2D(Collider2D other){
+        if (other.gameObject.tag == "Player"){
+            other.gameObject.GetComponent<PlayerControler>().takesDamege((int)(level/2)+baseDamage);
+        }
+    }
+
+    IEnumerator chanceColor()
+    {
+        speed = speed / 2;
+        spriteRender.color = new Color(255, 0, 0, 255);
+        GameObject blood = Instantiate(controller.bloods[Random.Range(0, controller.bloods.Length)], transform.position, Quaternion.identity);
+        yield return new WaitForSeconds(0.3f);
+        speed = speed * 2;
+        spriteRender.color = new Color(1, 1, 1, 1);
     }
 }

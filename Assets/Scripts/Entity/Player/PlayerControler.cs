@@ -6,11 +6,13 @@ public class PlayerControler : MonoBehaviour
 {
   public Rigidbody2D PlayerRb;
   public SpriteRenderer spriteRender;
+  public GameObject lifeBar;
+
 
   Vector2 movement;
   bool ladoDireito = false;
   bool ladoSuperior = false;
-  Vector2 lookingFor = new Vector2(1, 0);
+  Vector2 lookingFor = new Vector2(0, 1);
 
   //staus
   int maxLife = 50;
@@ -19,8 +21,16 @@ public class PlayerControler : MonoBehaviour
   int maxProtection = 0;
   int protection = 0;
   float speed = 2.5f;
+  bool isDead = false;
+  bool withBlood = false;
 
+  Controller controller;
+  GameObject camera;
 
+  void Start(){
+    camera = GameObject.Find("Camera");
+    controller = camera.GetComponent<Controller>();
+  }
 
   void Update()
   {
@@ -58,6 +68,35 @@ public class PlayerControler : MonoBehaviour
   public Vector2 getLookingFor(){
     return lookingFor;
   }
+
+
+  public void takesDamege(int index){
+    this.life -= index;
+    if(this.life <= 0){
+      this.life = 0;
+      isDead = true;
+    }
+    lifeBar.transform.localScale = new Vector3((float)life / (float)maxLife, 1, 1);
+    StartCoroutine(changeColor());
+    StartCoroutine(showBlood());
+  }
+
+    IEnumerator changeColor()
+    {  
+        spriteRender.color = new Color(255, 0, 0, 255);
+        yield return new WaitForSeconds(0.3f);
+        spriteRender.color = new Color(255, 255, 255, 255);
+    }
+
+    IEnumerator showBlood()
+    { 
+        if(!withBlood){
+          withBlood = true;
+          GameObject blood = Instantiate(controller.bloods[Random.Range(0, controller.bloods.Length)], transform.position, Quaternion.identity);
+          yield return new WaitForSeconds(0.3f);
+          withBlood = false;
+        }
+    }
 
   public void addMaxLife(int value){
     maxLife += value;
