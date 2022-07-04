@@ -5,21 +5,18 @@ using UnityEngine;
 public class spellSpeed : MonoBehaviour, ISpellControler
 {
     int level = 0;
-    // Start is called before the first frame update
-    void Start()
+    PlayerControler playerControler;
+    
+    void Awake()
     {
-        
-    }
-
-    // Update is called once per frame
-    public void Update()
-    {
-        
+        playerControler = GameObject.FindGameObjectWithTag("Player")
+                                    .GetComponent<PlayerControler>();
     }
 
     public void addSkill(){
         level += 1;
         this.gameObject.SetActive(true);
+        playerControler.addSpeed(0.1f); //add 10% speed to player
         return;
     }
 }

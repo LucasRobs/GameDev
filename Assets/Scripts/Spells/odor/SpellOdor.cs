@@ -13,19 +13,24 @@ public class SpellOdor : MonoBehaviour, ISpellControler
     int baseDrilling = 2;
     int level = 0;
     GameObject projectile;
-
-    void Start(){
+    public Odor projectileManager;
+    
+    void Awake(){
         player = GameObject.Find("Player");
         playerControler = player.GetComponent<PlayerControler>();
+    }
+
+    void init(){
         projectile = Instantiate(this.odor, transform.position, Quaternion.Euler(0, 0, 0));
         projectile.transform.SetParent(transform);
-        Odor projectileManager = projectile.GetComponent<Odor>();
+        projectileManager = projectile.GetComponent<Odor>();
         projectileManager.init(level + baseDamage);
     }
 
-
     public void addSkill(){
+        if(!projectileManager){init();}
         level += 1;
+        projectileManager.init(level + baseDamage);
         this.gameObject.SetActive(true);
         return;
     }

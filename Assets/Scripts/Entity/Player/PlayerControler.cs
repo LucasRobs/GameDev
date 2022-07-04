@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlayerControler : MonoBehaviour
 {
-  public float speed = 2.5f;
   public Rigidbody2D PlayerRb;
   public SpriteRenderer spriteRender;
 
@@ -12,6 +11,15 @@ public class PlayerControler : MonoBehaviour
   bool ladoDireito = false;
   bool ladoSuperior = false;
   Vector2 lookingFor = new Vector2(1, 0);
+
+  //staus
+  int maxLife = 50;
+  int life = 50;
+  float baseDamege = 1;
+  int maxProtection = 0;
+  int protection = 0;
+  float speed = 2.5f;
+
 
 
   void Update()
@@ -49,5 +57,23 @@ public class PlayerControler : MonoBehaviour
 
   public Vector2 getLookingFor(){
     return lookingFor;
+  }
+
+  public void addMaxLife(int value){
+    maxLife += value;
+    life += value;
+  }
+
+  public void addSpeed(float value){
+    speed += value;
+  }
+
+  public void addDamege(float value){
+    baseDamege = value;
+  }
+
+  public void addMaxProtection(int value){
+    maxProtection += value;
+    protection += value;
   }
 }

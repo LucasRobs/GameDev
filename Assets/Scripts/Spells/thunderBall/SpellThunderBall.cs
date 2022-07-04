@@ -11,6 +11,7 @@ public class SpellThunderBall : MonoBehaviour, ISpellControler
 
   float waitTime = 1f;
   float lifeBulletTime = 3f;
+  float nBullets = 0;
 
   void Start()
   {
@@ -36,15 +37,18 @@ public class SpellThunderBall : MonoBehaviour, ISpellControler
   IEnumerator handleShoot(float waitTime, float lifeBulletTime)
   {
     yield return new WaitForSeconds(0.5f * waitTime);
-    GameObject project = shoot();
+    List<GameObject> projects = new List<GameObject>();
+    for (int i = 0; i < nBullets; i++){projects.Add(shoot());}
     yield return new WaitForSeconds(waitTime);
     StartCoroutine(handleShoot(waitTime, lifeBulletTime));
     yield return new WaitForSeconds(lifeBulletTime - waitTime);
-    if (project) Destroy(project);
+    for(int i = 0; i < projects.Count; i++){if (projects[i]) Destroy(projects[i]);}
   }
 
   public void addSkill(){
     level += 1;
+    nBullets += 1;
+
     this.gameObject.SetActive(true);
     return;
   }

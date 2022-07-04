@@ -19,7 +19,7 @@ public class SpellOrbe : MonoBehaviour, ISpellControler
     int maxOrbs = 8;
 
 
-    void Start(){
+    void Awake(){
         player = GameObject.Find("Player");
         playerControler = player.GetComponent<PlayerControler>();
         StartCoroutine(handleShoot(waitTime , lifeBulletTime));

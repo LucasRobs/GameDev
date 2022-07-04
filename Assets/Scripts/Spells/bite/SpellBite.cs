@@ -12,8 +12,8 @@ public class SpellBite : MonoBehaviour, ISpellControler
     int baseDamage = 1;
     int baseDrilling = 2;
     int level = 1;
-
-    void Start(){
+    
+    void Awake(){
         player = GameObject.Find("Player");
         playerControler = player.GetComponent<PlayerControler>();
         StartCoroutine(handleShoot(waitTime , lifeBulletTime));
