@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Entity
   - Spell
+  - Coletor
   layers:
   - Default
   - TransparentFX
@@ -46,11 +47,17 @@ TagManager:
   - name: background
     uniqueID: 2407840901
     locked: 0
+  - name: souls
+    uniqueID: 1578504529
+    locked: 0
   - name: entity
     uniqueID: 105751439
     locked: 0
   - name: spell
     uniqueID: 248182251
+    locked: 0
+  - name: player
+    uniqueID: 836261589
     locked: 0
   - name: ui
     uniqueID: 3946542403

@@ -18,7 +18,7 @@ public class Controller : MonoBehaviour
     float velocity = 1f;
     Spell[] skillsSelected = new Spell[3];
     ISpellControler[] skillsInChoice = new ISpellControler[3];
-
+    bool inChoice = false;
 
 
    void Start()
@@ -27,11 +27,10 @@ public class Controller : MonoBehaviour
         getLevel();
     }
 
-    public void addKill(int _exp)
+    public void addKill()
     {
         kills += 1;
         TMPKill.text = kills+"";
-        handleLevel(_exp);
     }
 
 
@@ -39,15 +38,22 @@ public class Controller : MonoBehaviour
     public void handleLevel(int _exp)
     {
         this.exp += _exp;
+        print(exp+"/"+ getExpNextLevel() +" level:"+ getLevel());
         if (this.exp >= getExpNextLevel())
         {
-            levelUp();
+            while(this.exp >= getExpNextLevel())
+            {
+                if(!inChoice){
+                    inChoice = true;
+                    levelUp();
+                }
+            }
         }
     }
 
     void levelUp(){
+        this.exp -= getExpNextLevel();
         level += 1;
-        this.exp = 0;
         Time.timeScale = 0f;
         generateNewSkills();
         levelUpMenu.gameObject.SetActive(true);
@@ -55,6 +61,7 @@ public class Controller : MonoBehaviour
 
     public void addSkill(int index)
     {
+        inChoice = true;
         Time.timeScale = 1f;
         levelUpMenu.gameObject.SetActive(false);
         skillsInChoice[index].addSkill();
@@ -82,7 +89,8 @@ public class Controller : MonoBehaviour
 
     public int getExpNextLevel()
     {
-        return ((int) ((level * 2f) * 10));
+        float mutiplicador = level * 2f;
+        return ((int) ((level * 0.1f) * mutiplicador));
     }
 
     public int getLevel(){
@@ -94,6 +102,11 @@ public class Controller : MonoBehaviour
     }
 
     public float getVelocity(){
-        return 0.0005f;
+        return velocity;
+    }
+
+    public void takeSoul(int index){
+        //colocar efeitos da soul indo ate o player;
+        handleLevel(index);
     }
 }

@@ -95,6 +95,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d7b0cf3c35cf88259f0e3ad42bedbdc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nome: Botas de Couro
-  descricao: ganha velocidade
+  nome: Botas
+  descricao: Ganhe velocidade
   sprite: {fileID: 21300000, guid: 9be2ee4b0c9c18a909e9c5bab8ee2033, type: 3}

@@ -12,7 +12,7 @@ public class SpellBite : MonoBehaviour, ISpellControler
     int baseDamage = 1;
     int baseDrilling = 2;
     int level = 1;
-    int nBites = 10;
+    int nBites = 2;
     
     void Awake(){
         player = GameObject.Find("Player");
@@ -23,11 +23,22 @@ public class SpellBite : MonoBehaviour, ISpellControler
     public void shoot(float lifeBulletTime , int index){
         Vector3 pos = transform.position;
         Vector2 direction = playerControler.getLookingFor();
+        float rotation = 0;
+    
+        if(direction.x > 0){
+            rotation = 270;
+        }else if(direction.x < 0){
+            rotation = 90;
+        }else if(direction.y > 0){
+            rotation = 0;
+        }else{
+            rotation = 180;
+        }
         GameObject projectile = Instantiate(this.bite, new Vector3(
             pos.x+direction.x * (1+(index*0.3f)),
             pos.y+direction.y * (1+(index*0.3f)),
             0), 
-            Quaternion.Euler(0, 0, 0));
+            Quaternion.Euler(0, 0, rotation));
         projectile.transform.SetParent(transform);
         Bite projectileManager = projectile.GetComponent<Bite>();
         projectileManager.init(level + baseDamage);

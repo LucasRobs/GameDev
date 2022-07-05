@@ -20,7 +20,7 @@ public class PlayerControler : MonoBehaviour
   float baseDamege = 1;
   int maxProtection = 0;
   int protection = 0;
-  float speed = 2.5f;
+  float speed = 4f;
   bool isDead = false;
   bool withBlood = false;
 
@@ -76,9 +76,13 @@ public class PlayerControler : MonoBehaviour
       this.life = 0;
       isDead = true;
     }
-    lifeBar.transform.localScale = new Vector3((float)life / (float)maxLife, 1, 1);
+    updateLifeBar();
     StartCoroutine(changeColor());
     StartCoroutine(showBlood());
+  }
+
+  void updateLifeBar(){
+    lifeBar.transform.localScale = new Vector3((float)life / (float)maxLife, 1, 1);
   }
 
     IEnumerator changeColor()
@@ -101,6 +105,7 @@ public class PlayerControler : MonoBehaviour
   public void addMaxLife(int value){
     maxLife += value;
     life += value;
+    updateLifeBar();
   }
 
   public void addSpeed(float value){

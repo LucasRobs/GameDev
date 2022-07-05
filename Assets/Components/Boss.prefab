@@ -73,9 +73,9 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 105751439
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 57a8ffca400ad807f82192178c1a354d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 5d73c267ea2ee0e5497d2691abe33f74, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -150,10 +150,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f1f963be9f42c924a0b36c0605b1539, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vida: 20
-  speed: 0.5
-  level: 10
+  level: 15
+  vida: 30
+  speed: 0.8
   isBoss: 1
+  soulPrefab: {fileID: 5268585967036221347, guid: e091a4722abb69dd1af0cd58924e9fc0, type: 3}
 --- !u!95 &3610361456920327423
 Animator:
   serializedVersion: 3

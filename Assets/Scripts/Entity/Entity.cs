@@ -4,19 +4,19 @@ using UnityEngine;
 
 public class Entity : MonoBehaviour
 {
+  public int level = 1;
+  public int vida;
+  public float speed = 1f;
+  public bool isBoss = false;
+  public GameObject soulPrefab;
+
   GameObject player;
   GameObject camera;
 
-  public int vida;
   Controller controller;
   bool invulnerable;
 
-  public float speed = 1f;
   Transform positionPlayer;
-
-  public int level = 1;
-
-  public  bool isBoss = false;
   SpawPoint spawPoint;
   SpriteRenderer spriteRender;
 
@@ -76,15 +76,40 @@ public class Entity : MonoBehaviour
     StartCoroutine(handleIvunerable());
     vida -= damage;
     StartCoroutine(chanceColor());
+    StartCoroutine(handleSpeed());
+    showBlood();
+
     if (vida <= 0)
     {
-      if(isBoss){
-        GameObject.Find("spawnPoint").GetComponent<SpawPoint>().setBossWaveToZero();
-      }
-      controller.addKill(level*2);
-      Destroy(transform.gameObject);
+      handleSoul();
+      toDie();
     }
   }
+
+  void toDie(){
+    if(isBoss){
+      GameObject.Find("spawnPoint").GetComponent<SpawPoint>().setBossWaveToZero();
+    }
+    controller.addKill();
+    Destroy(transform.gameObject);
+  }
+
+  void handleSoul(){
+    if(isBoss){
+      GameObject soul = Instantiate(soulPrefab, transform.position, Quaternion.identity);
+      soul.GetComponent<Soul>().init(level*5);
+      print(level*5);
+    }else{
+      if(Random.Range(0,100) < 50){
+        GameObject soul = Instantiate(soulPrefab, transform.position, Quaternion.identity);
+        int force = Random.Range(1,3);
+        if(Random.Range(0,100) < 5){force = force * 2;}
+        soul.GetComponent<Soul>().init(force);
+        print(force);
+      }
+    }
+  }
+
   IEnumerator handleIvunerable()
     {  
         invulnerable = true;
@@ -100,11 +125,24 @@ public class Entity : MonoBehaviour
 
     IEnumerator chanceColor()
     {
-        speed = speed / 2;
         spriteRender.color = new Color(255, 0, 0, 255);
-        GameObject blood = Instantiate(controller.bloods[Random.Range(0, controller.bloods.Length)], transform.position, Quaternion.identity);
         yield return new WaitForSeconds(0.3f);
-        speed = speed * 2;
         spriteRender.color = new Color(1, 1, 1, 1);
     }
+
+    IEnumerator handleSpeed(){
+        float speedAux = speed;
+        speed = speed / 3;
+        yield return new WaitForSeconds(0.3f);
+        speed = speedAux;
+    }
+
+    void showDamege(int damage){
+        
+    }
+
+    void showBlood(){
+      Instantiate(controller.bloods[Random.Range(0, controller.bloods.Length)], transform.position, Quaternion.identity);
+    }
+    
 }

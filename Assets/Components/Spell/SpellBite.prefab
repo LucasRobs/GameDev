@@ -15,7 +15,7 @@ GameObject:
   m_Layer: 0
   m_Name: SpellBite
   m_TagString: Untagged
-  m_Icon: {fileID: 2800000, guid: 2bf82eb2a89176e5e82df82faf684f26, type: 3}
+  m_Icon: {fileID: 2800000, guid: 988ab74c5566d5bdaa0678a447d46771, type: 3}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -86,7 +86,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 54f84a8d66e23d8728984a69bccaeea7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 988ab74c5566d5bdaa0678a447d46771, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -109,6 +109,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d7b0cf3c35cf88259f0e3ad42bedbdc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nome: Mordida
-  descricao: Modidinha na canela.
-  sprite: {fileID: 21300000, guid: 54f84a8d66e23d8728984a69bccaeea7, type: 3}
+  nome: Ataque giratorio
+  descricao: "Almenta a dura\xE7ao do ataque giratorio"
+  sprite: {fileID: 21300000, guid: 988ab74c5566d5bdaa0678a447d46771, type: 3}

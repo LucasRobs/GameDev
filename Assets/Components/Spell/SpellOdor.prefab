@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   odor: {fileID: 1088996295770837566, guid: d3742acef5dbbfa2fbb6f47dad5d2d64, type: 3}
+  projectileManager: {fileID: 0}
 --- !u!212 &2517174246846747800
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -110,5 +111,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nome: Odor
-  descricao: Emite um fedor isuportavel
+  descricao: "emite um fedor insuport\xE1vel"
   sprite: {fileID: 21300000, guid: 0dbddc4e88390c4a38b43e40a29348d2, type: 3}
