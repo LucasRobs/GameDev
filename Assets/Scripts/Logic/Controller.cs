@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
  
 public class Controller : MonoBehaviour
 {
@@ -11,18 +12,21 @@ public class Controller : MonoBehaviour
     public GameObject[] Skills;
     public CardSkill[] CardsSkill = new CardSkill[3];
     public GameObject[] bloods;
+    public AudioSource audioSource;
+    public RectTransform expBar;
     
+
     TextMeshProUGUI TMPKill;
     int level = 1;
     int exp = 0;
     float velocity = 1f;
     Spell[] skillsSelected = new Spell[3];
     ISpellControler[] skillsInChoice = new ISpellControler[3];
-    bool inChoice = false;
 
 
    void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         TMPKill = ui.GetComponent<TextMeshProUGUI>();
         getLevel();
     }
@@ -33,38 +37,40 @@ public class Controller : MonoBehaviour
         TMPKill.text = kills+"";
     }
 
-
+    public void restartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
 
     public void handleLevel(int _exp)
     {
         this.exp += _exp;
         print(exp+"/"+ getExpNextLevel() +" level:"+ getLevel());
-        if (this.exp >= getExpNextLevel())
-        {
-            while(this.exp >= getExpNextLevel())
-            {
-                if(!inChoice){
-                    inChoice = true;
-                    levelUp();
-                }
-            }
-        }
+        levelUp();
     }
 
+    private void handleExpBar(){
+        expBar.transform.localScale = new Vector3((float)exp / (float)getExpNextLevel(),1f,1f);
+    }
+ 
     void levelUp(){
-        this.exp -= getExpNextLevel();
-        level += 1;
-        Time.timeScale = 0f;
-        generateNewSkills();
-        levelUpMenu.gameObject.SetActive(true);
+        handleExpBar();
+        if(exp >= getExpNextLevel()){
+            this.exp -= getExpNextLevel();
+            handleExpBar();
+            level += 1;
+            Time.timeScale = 0f;
+            generateNewSkills();
+            levelUpMenu.gameObject.SetActive(true);
+        }
     }
 
     public void addSkill(int index)
     {
-        inChoice = true;
         Time.timeScale = 1f;
         levelUpMenu.gameObject.SetActive(false);
         skillsInChoice[index].addSkill();
+        levelUp();
     }
 
     void generateNewSkills(){
@@ -107,6 +113,10 @@ public class Controller : MonoBehaviour
 
     public void takeSoul(int index){
         //colocar efeitos da soul indo ate o player;
+        print("soul taken"+index);
         handleLevel(index);
+        audioSource.Play();
     }
+
+    
 }

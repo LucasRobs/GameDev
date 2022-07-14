@@ -6,8 +6,9 @@ public class PlayerControler : MonoBehaviour
 {
   public Rigidbody2D PlayerRb;
   public SpriteRenderer spriteRender;
+  public Transform transformSprite;
   public GameObject lifeBar;
-
+  public GameObject gameOver;
 
   Vector2 movement;
   bool ladoDireito = false;
@@ -74,11 +75,15 @@ public class PlayerControler : MonoBehaviour
     this.life -= index;
     if(this.life <= 0){
       this.life = 0;
-      isDead = true;
+      dead();
     }
     updateLifeBar();
     StartCoroutine(changeColor());
     StartCoroutine(showBlood());
+  }
+
+  void dead(){
+      gameOver.gameObject.SetActive(true);
   }
 
   void updateLifeBar(){

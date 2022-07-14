@@ -5,6 +5,7 @@ using UnityEngine;
 public class SpawPoint : MonoBehaviour{
     public GameObject enimy;
     public GameObject boss;
+    public GameObject bossAlert;
     public List<GameObject> enemys = new List<GameObject>();
     public Sprite spriteDefalt;
     
@@ -55,6 +56,17 @@ public class SpawPoint : MonoBehaviour{
         bossWave = 0;
     }
 
+  
+  IEnumerator startBossAlert()
+  {
+      for(int i = 0; i < 5; i++){
+        bossAlert.gameObject.SetActive(true);
+        yield return new WaitForSeconds(0.2f);
+        bossAlert.gameObject.SetActive(false);
+        yield return new WaitForSeconds(0.1f);
+      }
+  }
+
     private GameObject getNewEnimy(){
         Sprite sprite = spriteDefalt;
         int level = 1;
@@ -71,6 +83,7 @@ public class SpawPoint : MonoBehaviour{
             isBoss = true;
             bossWave = 1;
             controller.setVelocity(1f);
+            StartCoroutine(startBossAlert());
         }else if(spawnController <= 115 * spawnMultiplier){//wave 2
             sprite = spritesWave2[Random.Range(0, spritesWave2.Length)];
             level = 2;
@@ -85,6 +98,7 @@ public class SpawPoint : MonoBehaviour{
             isBoss = true;
             bossWave = 2;
             controller.setVelocity(1f);
+            StartCoroutine(startBossAlert());
         }else if(spawnController <= 300 * spawnMultiplier|| bossWave == 3 ){//wave 3
             sprite = spritesWave3[Random.Range(0, spritesWave3.Length)];
             level = 1;
@@ -95,6 +109,7 @@ public class SpawPoint : MonoBehaviour{
             isBoss = true;
             bossWave = 3;
             controller.setVelocity(1f);
+            StartCoroutine(startBossAlert());
         }else if(spawnController <= 450 * spawnMultiplier || bossWave == 4){//wave 4
             sprite = spritesWave4[Random.Range(0, spritesWave4.Length)];
             level = 5;
@@ -106,6 +121,7 @@ public class SpawPoint : MonoBehaviour{
             isBoss = true;
             bossWave = 4;
             controller.setVelocity(1f);
+            StartCoroutine(startBossAlert());
         }else if(spawnController <= 520 * spawnMultiplier || bossWave == 5){//wave 5
             sprite = spritesWave5[Random.Range(0, spritesWave5.Length)];
             level = 5;
@@ -117,6 +133,7 @@ public class SpawPoint : MonoBehaviour{
             isBoss = true;
             bossWave = 5;
             controller.setVelocity(0.4f);
+            StartCoroutine(startBossAlert());
         }else if(spawnController <= 600 * spawnMultiplier || bossWave == 6){//wave 6
             sprite = spritesWave6[Random.Range(0, spritesWave6.Length)];
             level = 8;
@@ -127,6 +144,7 @@ public class SpawPoint : MonoBehaviour{
             speed = 0.8f;
             isBoss = true;
             bossWave = 6;
+            StartCoroutine(startBossAlert());
         }else if(spawnController <= 1000 * spawnMultiplier){//wave 7
             sprite = spritesWave7[Random.Range(0, spritesWave7.Length)];
             level = 10;
@@ -157,6 +175,7 @@ public class SpawPoint : MonoBehaviour{
             speed = 2f;
             isBoss = true;
             bossWave = 10;
+            StartCoroutine(startBossAlert());
         }else if(spawnController > 10001){//wave 11
             return null; 
         }

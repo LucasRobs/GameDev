@@ -9,6 +9,9 @@ public class Entity : MonoBehaviour
   public float speed = 1f;
   public bool isBoss = false;
   public GameObject soulPrefab;
+  public AudioClip[] sounds;
+  private AudioSource audioSource;
+
 
   GameObject player;
   GameObject camera;
@@ -29,6 +32,8 @@ public class Entity : MonoBehaviour
     controller = camera.GetComponent<Controller>();
     spriteRender = GetComponent<SpriteRenderer>();
     positionPlayer = player.transform;
+    audioSource = GetComponent<AudioSource>();
+    audioSource.clip = sounds[Random.Range(0, sounds.Length)];
   }
 
   private void FixedUpdate()
@@ -91,7 +96,8 @@ public class Entity : MonoBehaviour
       GameObject.Find("spawnPoint").GetComponent<SpawPoint>().setBossWaveToZero();
     }
     controller.addKill();
-    Destroy(transform.gameObject);
+    audioSource.Play();
+    Destroy(transform.gameObject,0.1f);
   }
 
   void handleSoul(){

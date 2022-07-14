@@ -5,10 +5,14 @@ using UnityEngine;
 public class Soul : MonoBehaviour
 {
   int value = 1;
+  SpriteRenderer spriteRender;
   Controller controller;
 
   private void Start() {
-    controller = GameObject.Find("Camera").GetComponent<Controller>();
+    GameObject camera = GameObject.Find("Camera");
+    controller = camera.GetComponent<Controller>();
+    spriteRender = GetComponent<SpriteRenderer>();
+    StartCoroutine(handleDestroy());
   }
 
   public void init(int index){
@@ -22,4 +26,16 @@ public class Soul : MonoBehaviour
           Destroy(this.gameObject);
       }
   }
+
+    IEnumerator handleDestroy()
+    {  
+        yield return new WaitForSeconds(5f);
+        for(int i = 0; i < 200; i++){
+          spriteRender.color = new Color(0, 0, 0, 0);
+          yield return new WaitForSeconds(0.01f);
+          spriteRender.color = new Color(1, 1, 1, 1);
+          yield return new WaitForSeconds(0.01f);
+        }
+        Destroy(this.gameObject);
+    }
 }
