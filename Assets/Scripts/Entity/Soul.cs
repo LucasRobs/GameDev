@@ -29,7 +29,7 @@ public class Soul : MonoBehaviour
 
     IEnumerator handleDestroy()
     {  
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(30f);
         for(int i = 0; i < 200; i++){
           spriteRender.color = new Color(0, 0, 0, 0);
           yield return new WaitForSeconds(0.01f);

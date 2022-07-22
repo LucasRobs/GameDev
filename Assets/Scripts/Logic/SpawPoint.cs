@@ -10,6 +10,7 @@ public class SpawPoint : MonoBehaviour{
     public Sprite spriteDefalt;
     
     GameObject camera;
+    GameObject player;
     Controller controller;
     int spawnController = 0;
     int spawnMultiplier = 1;
@@ -35,10 +36,14 @@ public class SpawPoint : MonoBehaviour{
     public Sprite[] spritesWave10;
     public Sprite[] spritesWave10_1;
     public Sprite[] spritesWave11;
+
+
     private void Start()
     {
+        player = GameObject.FindGameObjectWithTag("Player");
         camera = GameObject.Find("Camera");
         controller = camera.GetComponent<Controller>();
+        StartCoroutine(handleSpawn());
     }
 
     public void spawn(){
@@ -46,12 +51,34 @@ public class SpawPoint : MonoBehaviour{
             spawnController += 1;
         }
         GameObject enimy = getNewEnimy();
-        if(enimy){
-        GameObject newEnemy = Instantiate(enimy, transform.position, Quaternion.Euler(0, 0, 0));
-        enemys.Add(newEnemy);
+        if(enimy){    
+            GameObject newEnemy = Instantiate(enimy, newSpawnPoint(), Quaternion.Euler(0, 0, 0));
+            enemys.Add(newEnemy);
         }
     }
 
+    float randonSignal(float number){
+        return Random.Range(0, 2) == 1 ? number * -1 : number;
+    }
+
+    public Vector3 newSpawnPoint(){
+        float x = randonSignal(player.transform.position.x + Random.Range(-9, 9));
+        float y = randonSignal(player.transform.position.y + Random.Range(-9, 9));
+        if(Random.Range(0, 2) == 1) x = player.transform.position.x + randonSignal(9f);
+        else y = player.transform.position.y + randonSignal(9f);
+        return new Vector3(x,y,0);
+    }
+
+    public bool needRelocation(Transform _transform){
+        if(_transform){
+            if((_transform.position.x > player.transform.position.x + 11 || _transform.position.y > player.transform.position.y + 11) || 
+               (_transform.position.x < player.transform.position.x - 11 || _transform.position.y < player.transform.position.y - 11)){
+                return true;
+            }
+        }
+        return false;
+    }
+    
     public void setBossWaveToZero(){
         bossWave = 0;
     }
@@ -176,7 +203,7 @@ public class SpawPoint : MonoBehaviour{
             isBoss = true;
             bossWave = 10;
             StartCoroutine(startBossAlert());
-        }else if(spawnController > 10001){//wave 11
+        }else if(spawnController > 10001){//wave 12
             return null; 
         }
 
@@ -186,12 +213,23 @@ public class SpawPoint : MonoBehaviour{
         else newEnimy = enimy;
 
         newEnimy.GetComponent<SpriteRenderer>().sprite = sprite;
-        newEnimy.GetComponent<Entity>().setLevel(level);
-        newEnimy.GetComponent<Entity>().setSpeed(speed);
+        Entity newEtity = newEnimy.GetComponent<Entity>();
+        newEtity.setLevel(level);
+        newEtity.setSpeed(speed);
+        newEtity.setSpeed(speed);
+        newEtity.player = player;
+        newEtity.camera = camera;
         if(isBoss){
-            newEnimy.GetComponent<Entity>().setSpawPoint(this);
-            newEnimy.GetComponent<Entity>().setIsBossToTrue();
+            newEtity.setSpawPoint(this);
+            newEtity.setIsBossToTrue();
         }
         return newEnimy;
+    }
+
+    IEnumerator handleSpawn()
+    {  
+        yield return new WaitForSeconds(controller.getVelocity());
+        spawn();    
+        StartCoroutine(handleSpawn());
     }
 }

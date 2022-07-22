@@ -125,4 +125,12 @@ public class PlayerControler : MonoBehaviour
     maxProtection += value;
     protection += value;
   }
+
+  public void addLife(int value){
+    life += value;
+    if(life > maxLife){
+      life = maxLife;
+    }
+    updateLifeBar();
+  }
 }

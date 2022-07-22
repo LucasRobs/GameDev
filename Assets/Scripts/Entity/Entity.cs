@@ -1,50 +1,71 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using UnityEngine.UI;
+using UnityEngine.U2D;
 
 public class Entity : MonoBehaviour
 {
-  public int level = 1;
-  public int vida;
+
   public float speed = 1f;
   public bool isBoss = false;
   public GameObject soulPrefab;
+  public GameObject foodPrefab;
   public AudioClip[] sounds;
-  private AudioSource audioSource;
+  public GameObject player;
+  public GameObject camera;
 
+  AudioSource audioSource;
 
-  GameObject player;
-  GameObject camera;
-
+  GameObject textDamege;
   Controller controller;
+  GameObject spawner;
+  SpawPoint spawPoint;
   bool invulnerable;
 
   Transform positionPlayer;
-  SpawPoint spawPoint;
+  float px;
+  float py;
   SpriteRenderer spriteRender;
 
   int baseDamage = 1;
+  int level = 1;
+  int vida = 1;
   
   private void Start()
   {
-    player = GameObject.FindGameObjectWithTag("Player");
-    camera = GameObject.Find("Camera");
     controller = camera.GetComponent<Controller>();
     spriteRender = GetComponent<SpriteRenderer>();
     positionPlayer = player.transform;
     audioSource = GetComponent<AudioSource>();
     audioSource.clip = sounds[Random.Range(0, sounds.Length)];
+    textDamege = controller.getTextDamege();
+    spawner = GameObject.Find("Spawner");
+    spawPoint = spawner.GetComponent<SpawPoint>();
   }
 
   private void FixedUpdate()
   {
     if (positionPlayer.gameObject != null)
     {
+      px = positionPlayer.position.x;
+      py = positionPlayer.position.y;
+      StartCoroutine(handlePosition());
       transform.position = Vector2.MoveTowards(transform.position, positionPlayer.position, speed * Time.deltaTime);
       handleFlip();
       handleLayer();
     }
   }
+
+    IEnumerator handlePosition()
+    {  
+        if(spawPoint.needRelocation(this.transform)){
+          transform.position = spawPoint.newSpawnPoint();
+        }
+        yield return new WaitForSeconds(1f);
+        StartCoroutine(handlePosition());
+    }
 
   private void handleFlip()
   {
@@ -59,7 +80,10 @@ public class Entity : MonoBehaviour
 
   public void setLevel(int level)
   {
-    this.vida = level * 2;
+    print(vida);
+    this.vida +=(int) level / 2;
+    print(vida);
+  
     this.level = level;
   }
 
@@ -78,12 +102,13 @@ public class Entity : MonoBehaviour
   public void doDamage(int damage)
   {
     if(invulnerable)return;
+    showDamege(damage);
     StartCoroutine(handleIvunerable());
     vida -= damage;
     StartCoroutine(chanceColor());
     StartCoroutine(handleSpeed());
     showBlood();
-
+    print(vida);
     if (vida <= 0)
     {
       handleSoul();
@@ -93,7 +118,7 @@ public class Entity : MonoBehaviour
 
   void toDie(){
     if(isBoss){
-      GameObject.Find("spawnPoint").GetComponent<SpawPoint>().setBossWaveToZero();
+      GameObject.Find("Spawner").GetComponent<SpawPoint>().setBossWaveToZero();
     }
     controller.addKill();
     audioSource.Play();
@@ -112,6 +137,9 @@ public class Entity : MonoBehaviour
         if(Random.Range(0,100) < 5){force = force * 2;}
         soul.GetComponent<Soul>().init(force);
         print(force);
+      }
+      if(Random.Range(0,100) <= 2){
+        GameObject food = Instantiate(foodPrefab, transform.position, Quaternion.identity);
       }
     }
   }
@@ -143,12 +171,13 @@ public class Entity : MonoBehaviour
         speed = speedAux;
     }
 
-    void showDamege(int damage){
-        
+    public void showDamege(int damage){
+      GameObject textMP = Instantiate(textDamege, transform.position, Quaternion.identity);
+      TextMeshPro TMP = textMP.GetComponent<TextMeshPro>();
+      TMP.text = damage.ToString();
     }
 
     void showBlood(){
       Instantiate(controller.bloods[Random.Range(0, controller.bloods.Length)], transform.position, Quaternion.identity);
     }
-    
 }

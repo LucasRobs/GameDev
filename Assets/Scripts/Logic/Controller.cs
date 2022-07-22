@@ -14,6 +14,9 @@ public class Controller : MonoBehaviour
     public GameObject[] bloods;
     public AudioSource audioSource;
     public RectTransform expBar;
+    public GameObject textDamege;
+    public PlayerControler PControler;
+
     
 
     TextMeshProUGUI TMPKill;
@@ -73,6 +76,11 @@ public class Controller : MonoBehaviour
         levelUp();
     }
 
+    public GameObject getTextDamege()
+    {
+        return textDamege;
+    }
+
     void generateNewSkills(){
         int[] oudNunbers = new int[3];
         for (int i = 0; i < 3; i++){
@@ -118,5 +126,8 @@ public class Controller : MonoBehaviour
         audioSource.Play();
     }
 
-    
+    public void takeFood(int index){
+        PControler.addLife(index);
+        audioSource.Play();
+    }
 }
