@@ -156,6 +156,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 1
   isBoss: 0
+  level: 1
+  player: {fileID: 0}
+  camera: {fileID: 0}
+  AiController: {fileID: 0}
   soulPrefab: {fileID: 5268585967036221347, guid: e091a4722abb69dd1af0cd58924e9fc0, type: 3}
   foodPrefab: {fileID: 5268585967036221347, guid: c4e1d30c19fc1e4e6a3a32f3df4fb4a6, type: 3}
   sounds:
@@ -205,8 +209,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: b2da09cd4f8d900ada7da5ece154a502, type: 3}
   - {fileID: 8300000, guid: bcd4af97874fad7919ab12f8e5c61ad7, type: 3}
   - {fileID: 8300000, guid: 432ee96dba5b7a69c9464d4140931626, type: 3}
-  player: {fileID: 0}
-  camera: {fileID: 0}
 --- !u!50 &3222807889494281138
 Rigidbody2D:
   serializedVersion: 4

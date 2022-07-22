@@ -5,6 +5,7 @@ using UnityEngine;
 public class SpawPoint : MonoBehaviour{
     public GameObject enimy;
     public GameObject boss;
+    public GameObject aStart;
     public GameObject bossAlert;
     public List<GameObject> enemys = new List<GameObject>();
     public Sprite spriteDefalt;
@@ -51,10 +52,19 @@ public class SpawPoint : MonoBehaviour{
             spawnController += 1;
         }
         GameObject enimy = getNewEnimy();
-        if(enimy){    
-            GameObject newEnemy = Instantiate(enimy, newSpawnPoint(), Quaternion.Euler(0, 0, 0));
-            enemys.Add(newEnemy);
+        if(enimy){
+            if(enemys.Count < 100){
+                GameObject newAStart = Instantiate(aStart, newSpawnPoint(), Quaternion.Euler(0, 0, 0));
+                GameObject newEnemy = Instantiate(enimy, newAStart.transform.position, Quaternion.Euler(0, 0, 0));
+                newEnemy.transform.SetParent(newAStart.transform);
+                newEnemy.GetComponent<Entity>().aStart = newAStart;
+                enemys.Add(newEnemy);
+            }
         }
+    }
+
+    public void removeEnemy(GameObject enemy){
+        enemys.Remove(enemy);
     }
 
     float randonSignal(float number){
@@ -214,11 +224,10 @@ public class SpawPoint : MonoBehaviour{
 
         newEnimy.GetComponent<SpriteRenderer>().sprite = sprite;
         Entity newEtity = newEnimy.GetComponent<Entity>();
-        newEtity.setLevel(level);
-        newEtity.setSpeed(speed);
-        newEtity.setSpeed(speed);
-        newEtity.player = player;
-        newEtity.camera = camera;
+        newEtity.player= player;
+        newEtity.camera= camera;
+        newEtity.level = level;
+        newEtity.speed = speed;
         if(isBoss){
             newEtity.setSpawPoint(this);
             newEtity.setIsBossToTrue();

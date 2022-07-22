@@ -10,13 +10,17 @@ public class Entity : MonoBehaviour
 
   public float speed = 1f;
   public bool isBoss = false;
+  public int level = 1;
+  public GameObject player;
+  public GameObject camera;
+  public AiController AiController;
+  public GameObject aStart;
   public GameObject soulPrefab;
   public GameObject foodPrefab;
   public AudioClip[] sounds;
-  public GameObject player;
-  public GameObject camera;
 
   AudioSource audioSource;
+
 
   GameObject textDamege;
   Controller controller;
@@ -30,11 +34,11 @@ public class Entity : MonoBehaviour
   SpriteRenderer spriteRender;
 
   int baseDamage = 1;
-  int level = 1;
   int vida = 1;
   
   private void Start()
   {
+    this.vida +=(int) level / 2;
     controller = camera.GetComponent<Controller>();
     spriteRender = GetComponent<SpriteRenderer>();
     positionPlayer = player.transform;
@@ -49,22 +53,17 @@ public class Entity : MonoBehaviour
   {
     if (positionPlayer.gameObject != null)
     {
-      px = positionPlayer.position.x;
-      py = positionPlayer.position.y;
-      StartCoroutine(handlePosition());
-      transform.position = Vector2.MoveTowards(transform.position, positionPlayer.position, speed * Time.deltaTime);
       handleFlip();
       handleLayer();
+      handlePosition();
     }
   }
 
-    IEnumerator handlePosition()
+    void handlePosition()
     {  
-        if(spawPoint.needRelocation(this.transform)){
-          transform.position = spawPoint.newSpawnPoint();
-        }
-        yield return new WaitForSeconds(1f);
-        StartCoroutine(handlePosition());
+      if(spawPoint.needRelocation(aStart.transform)){
+        aStart.transform.position = spawPoint.newSpawnPoint();
+      }
     }
 
   private void handleFlip()
@@ -81,7 +80,7 @@ public class Entity : MonoBehaviour
   public void setLevel(int level)
   {
     print(vida);
-    this.vida +=(int) level / 2;
+    this.vida =(int) level / 2;
     print(vida);
   
     this.level = level;
@@ -89,6 +88,14 @@ public class Entity : MonoBehaviour
 
   public void setSpeed(float speed){
     this.speed = speed;
+  }
+
+  public void setCamera(GameObject _camera){
+      camera = _camera;
+  }
+
+  public void setPlayer(GameObject _player){
+      player = _player;
   }
 
   public void setIsBossToTrue(){
@@ -121,7 +128,9 @@ public class Entity : MonoBehaviour
       GameObject.Find("Spawner").GetComponent<SpawPoint>().setBossWaveToZero();
     }
     controller.addKill();
+    spawPoint.removeEnemy(this.gameObject);
     audioSource.Play();
+    AiController.DestroyNow();
     Destroy(transform.gameObject,0.1f);
   }
 

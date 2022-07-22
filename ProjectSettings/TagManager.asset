@@ -53,6 +53,9 @@ TagManager:
   - name: entity
     uniqueID: 105751439
     locked: 0
+  - name: wall
+    uniqueID: 2716969569
+    locked: 0
   - name: spell
     uniqueID: 248182251
     locked: 0

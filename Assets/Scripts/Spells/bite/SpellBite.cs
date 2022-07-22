@@ -12,7 +12,7 @@ public class SpellBite : MonoBehaviour, ISpellControler
     int baseDamage = 1;
     int baseDrilling = 2;
     int level = 1;
-    int nBites = 2;
+    int nBites = 1;
     
     void Awake(){
         player = GameObject.Find("Player");
